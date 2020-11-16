@@ -59,10 +59,11 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-server-core:1.4.0")
-                implementation("io.ktor:ktor-server-netty:1.4.0")
-                implementation("io.ktor:ktor-serialization:1.4.0")
-                implementation("io.ktor:ktor-html-builder:1.4.0")
+                implementation("ch.qos.logback:logback-classic:1.2.3")
+                implementation("io.ktor:ktor-server-core:1.4.2")
+                implementation("io.ktor:ktor-server-cio:1.4.2")
+                implementation("io.ktor:ktor-serialization:1.4.2")
+                implementation("io.ktor:ktor-html-builder:1.4.2")
                 implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
             }
         }
@@ -73,10 +74,10 @@ kotlin {
         }
         val jsMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-js:1.4.0")
-                implementation("io.ktor:ktor-client-core-js:1.4.0")
-                implementation("io.ktor:ktor-client-json-js:1.4.0")
-                implementation("io.ktor:ktor-client-serialization-js:1.4.0")
+                implementation("io.ktor:ktor-client-js:1.4.2")
+                implementation("io.ktor:ktor-client-core-js:1.4.2")
+                implementation("io.ktor:ktor-client-json-js:1.4.2")
+                implementation("io.ktor:ktor-client-serialization-js:1.4.2")
 
                 implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.2")
                 implementation("org.jetbrains:kotlin-react:16.13.1-pre.110-kotlin-1.4.10")
@@ -94,13 +95,13 @@ kotlin {
 application {
     mainClassName = "ServerKt"
 }
-tasks.getByName<KotlinWebpack>("jsBrowserProductionWebpack") {
+tasks.getByName<KotlinWebpack>("jsBrowserDevelopmentWebpack") {
     outputFileName = "output.js"
 }
 tasks.getByName<Jar>("jvmJar") {
-    dependsOn(tasks.getByName("jsBrowserProductionWebpack"))
-    val jsBrowserProductionWebpack = tasks.getByName<KotlinWebpack>("jsBrowserProductionWebpack")
-    from(File(jsBrowserProductionWebpack.destinationDirectory, jsBrowserProductionWebpack.outputFileName))
+    dependsOn(tasks.getByName("jsBrowserDevelopmentWebpack"))
+    val jsBrowserDevelopmentWebpack = tasks.getByName<KotlinWebpack>("jsBrowserDevelopmentWebpack")
+    from(File(jsBrowserDevelopmentWebpack.destinationDirectory, jsBrowserDevelopmentWebpack.outputFileName))
 }
 tasks.getByName<JavaExec>("run") {
     dependsOn(tasks.getByName<Jar>("jvmJar"))
